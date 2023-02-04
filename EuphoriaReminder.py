@@ -4,10 +4,6 @@ import time
 import requests
 import csv
 from win10toast import ToastNotifier
-import sv_ttk
-import tempfile
-from PIL import Image, ImageTk
-
 
 def show_notification(title, message, duration):
     toaster = ToastNotifier()
@@ -32,19 +28,9 @@ def start_button_click():
             break
 
 window = tkinter.Tk()
-response = requests.get("https://raw.githubusercontent.com/BitFlippy/Euphoria.Reminder/main/icon.png")
-with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
-    f.write(response.content)
-
-img = Image.open(f.name)
-img = img.resize((64, 64), Image.ANTIALIAS)
-img = ImageTk.PhotoImage(img)
-window.iconphoto(False, img)
-
 window.title("Reminder")
 window.overrideredirect(1)
 window.eval('tk::PlaceWindow . center')
-sv_ttk.set_theme("dark")
 
 name_label = tkinter.Label(text="Notification Label:")
 name_label.pack()
