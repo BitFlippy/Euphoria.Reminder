@@ -4,6 +4,10 @@ import time
 import requests
 import csv
 from win10toast import ToastNotifier
+import sv_ttk
+import tempfile
+from PIL import Image, ImageTk
+
 
 def show_notification(title, message, duration):
     toaster = ToastNotifier()
@@ -28,12 +32,25 @@ def start_button_click():
             break
 
 window = tkinter.Tk()
-window.title("Reminder")
+response = requests.get("https://raw.githubusercontent.com/BitFlippy/Euphoria.Reminder/main/icon.png")
+with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
+    f.write(response.content)
 
-name_label = tkinter.Label(text="Notification Name:")
+img = Image.open(f.name)
+img = img.resize((64, 64), Image.ANTIALIAS)
+img = ImageTk.PhotoImage(img)
+window.iconphoto(False, img)
+
+window.title("Reminder")
+window.overrideredirect(1)
+window.eval('tk::PlaceWindow . center')
+sv_ttk.set_theme("dark")
+
+name_label = tkinter.Label(text="Notification Label:")
 name_label.pack()
 
 name_entry = tkinter.Entry()
+name_entry.insert(0,'Hey, friendly reminder^^')
 name_entry.pack()
 
 interval_label = tkinter.Label(text="Interval (minutes):")
@@ -44,7 +61,7 @@ interval_slider = tkinter.Scale(
     from_=1,
     to=60,
     orient="horizontal",
-    length=200,
+    length=400,
     resolution=1
 )
 interval_slider.pack()
@@ -54,10 +71,10 @@ duration_label.pack()
 
 duration_slider = tkinter.Scale(
     window,
-    from_=10,
+    from_=5,
     to=20,
     orient="horizontal",
-    length=200,
+    length=400,
     resolution=1
 )
 duration_slider.pack()
@@ -71,4 +88,3 @@ for line in csv.reader(response.text.splitlines()):
     messages.append(line[0])
 
 window.mainloop()
-
