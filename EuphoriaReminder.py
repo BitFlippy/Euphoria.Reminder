@@ -3,16 +3,13 @@ import random
 import time
 import requests
 import csv
-from win10toast import ToastNotifier
+from plyer import notification
 
-def show_notification(title, message, duration):
-    toaster = ToastNotifier()
-    return toaster.show_toast(
-        title=title,
-        msg=message,
-        duration=duration,
-        threaded=True
-    )
+
+
+
+
+
 
 def start_button_click():
     window.withdraw()
@@ -21,13 +18,18 @@ def start_button_click():
     notification_name = name_entry.get()
     while True:
         message = random.choice(messages)
-        result = show_notification(notification_name, message, duration)
-        if result:
-            time.sleep(interval)
-        else:
-            break
+        notification.notify(
+            title=notification_name,
+            message=message,
+            app_name='<3',
+            app_icon='icon.ico',
+            timeout=duration
+        )
+        time.sleep(interval)
 
 window = tkinter.Tk()
+
+
 window.title("Reminder")
 window.overrideredirect(1)
 window.eval('tk::PlaceWindow . center')
