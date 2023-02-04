@@ -71,3 +71,4 @@ for line in csv.reader(response.text.splitlines()):
     messages.append(line[0])
 
 window.mainloop()
+
